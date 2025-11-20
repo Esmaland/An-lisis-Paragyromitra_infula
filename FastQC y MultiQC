@@ -6,3 +6,6 @@ mkdir -p results/01.fastqc/
 fastqc data/*.gz -o results/01.fastqc/
 #Esto me va a generar archivos .html y .zip de los R1 y R2. Ahora visualizo con multiQC
 multiqc results/01.fastqc/ -o results/01.fastqc/
+#Ahora para poder abrir el multiqc debo descargar el archivo a mi computadora. Abrir Ubuntu
+/mnt/c/Diana_Franco/UNAM/Proyecto_de_tesis$ 
+scp dafranco@mitla.ccg.unam.mx:/data2/PEG/dafranco/Metagenoma_paragyromitra/results/01.fastqc/multiqc_report.html .
