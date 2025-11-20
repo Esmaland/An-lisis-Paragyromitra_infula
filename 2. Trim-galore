@@ -1,0 +1,14 @@
+#Ahora limpiamos las lecturas de baja calidad con trim galore
+conda activate trim-galore
+mkdir -p results/02.trimgalore
+#Le pongo los comandos: 
+#la opción --fastqc permite --> Run FastQC in the default mode on the FastQ file once trimming is complete.
+#-j por los procesadores que quiero que utilice
+#--paired porque tengo R1 y R2, lecturas pareadas 
+#Por comodidad cambié los nombres delos archivos a
+mv Gyromitra_infula_mx65_S212_R2.fastq.gz G_2.fastqc.gz
+mv Gyromitra_infula_mx65_S212_R1.fastq.gz G_1.fastq.gz
+trim_galore --fastqc -j 4 --paired data/G_1.fastq.gz data/G_2.fastqc.gz -o results/02.trimgalore
+#Para visualizar con:
+multiqc results/02.trimgalore/9h -o results/02.trimgalore
+conda deactivate
