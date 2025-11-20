@@ -1,0 +1,8 @@
+#Esto es con archivos fastq.gz 
+#Lo primero que tengo que hacer es evaluar la calidad de las lecturas, por lo que debo pasarlas por fastqc.
+#Para esto creé una carpeta llamada Metagenoma_paragyromitra 
+mkdir -p Metagenoma_paragyromitra/{data,results,scr,outs} 
+mkdir -p results/01.fastqc/
+fastqc data/*.gz -o results/01.fastqc/
+#Esto me va a generar archivos .html y .zip de los R1 y R2. Ahora visualizo con multiQC
+multiqc results/01.fastqc/ -o results/01.fastqc/
