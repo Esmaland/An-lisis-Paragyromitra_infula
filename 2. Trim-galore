@@ -10,6 +10,6 @@ mv Gyromitra_infula_mx65_S212_R2.fastq.gz G_2.fastqc.gz
 mv Gyromitra_infula_mx65_S212_R1.fastq.gz G_1.fastq.gz
 trim_galore --fastqc -j 4 --paired data/G_1.fastq.gz data/G_2.fastqc.gz -o results/02.trimgalore
 #Para visualizar con:
-multiqc results/02.trimgalore/9h -o results/02.trimgalore
+multiqc results/02.trimgalore -o results/02.trimgalore
 conda deactivate
 #corrió como por 30min
