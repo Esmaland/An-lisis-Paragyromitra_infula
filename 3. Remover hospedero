@@ -1,0 +1,7 @@
+#Primero debo descargar los genomas
+wget "https://api.ncbi.nlm.nih.gov/datasets/v2alpha/genomes/accession/JBALZV000000000/download?filename=JBALZV000000000.zip" -O JBALZV000000000.zip
+wget "https://api.ncbi.nlm.nih.gov/datasets/v2alpha/genomes/accession/JBALZF000000000/download?filename=JBALZF000000000.zip" -O JBALZF000000000.zip
+wget "https://api.ncbi.nlm.nih.gov/datasets/v2alpha/genomes/accession/JBAMAD000000000/download?filename=JBAMAD000000000.zip" -O JBAMAD000000000.zip
+wget "https://api.ncbi.nlm.nih.gov/datasets/v2alpha/genomes/accession/JBCDPU000000000/download?filename=JBCDPU000000000.zip" -O JBCDPU000000000.zip
+wget "https://api.ncbi.nlm.nih.gov/datasets/v2alpha/genomes/accession/JBALYS000000000/download?filename=JBALYS000000000.zip" -O JBALYS000000000.zip
+wget "https://api.ncbi.nlm.nih.gov/datasets/v2alpha/genomes/accession/JBAMAC000000000/download?filename=JBAMAC000000000.zip" -O JBAMAC000000000.zip
