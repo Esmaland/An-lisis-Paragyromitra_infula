@@ -13,3 +13,5 @@ trim_galore --fastqc -j 4 --paired data/G_1.fastq.gz data/G_2.fastqc.gz -o resul
 multiqc results/02.trimgalore -o results/02.trimgalore
 conda deactivate
 #corrió como por 30min
+#renombré para no confundirme
+ mv results/02.trimgalore/multiqc_report.html multiqc_trimgalore.html
