@@ -12,3 +12,4 @@ trim_galore --fastqc -j 4 --paired data/G_1.fastq.gz data/G_2.fastqc.gz -o resul
 #Para visualizar con:
 multiqc results/02.trimgalore/9h -o results/02.trimgalore
 conda deactivate
+#corrió como por 30min
