@@ -1,0 +1,33 @@
+#Para hacer el análisis de amplicones se siguieron estos pasos:
+#1.- Quitar los adaptadores con cutadapt
+conda activate qiime2-amplicon-2025.7
+mkdir results/01.cutadapt
+out="results/01.cutadapt"
+mkdir -p $out
+
+for FILE in $(ls data/*.fastq | sed 's/\.fastq//' | sed 's/data\///' | sort -u); do
+  cutadapt -m 800 -M 1800 \
+    -g AGRGTTYGATYMTGGCTCAG -a RGYTACCTTGTTACGACTT -Z -j 4 \
+    -o $out/"${FILE}_trimmed.fastq.gz" data/"${FILE}.fastq"
+done
+#el -m lo fui variando de 1200 hasta 800 y como las secuencias filtradas no vcambiaban para nada, decidí dejarlo en 800. Este me indica el largo mínimo que deben tener mis secuencias para ser consideradas. 
+#el -M es para indicar el largo máximo que pueden tener
+#-Z para hacerlos zip, -j el número de núcleos. es importante poner mkdir -p $out porque sin ese no se crean nuevos directorios y sale error
+#Luego se debe crear el manifiesto:
+# Crear archivo manifest
+echo "sample-id,absolute-filepath,direction" > manifest.tsv
+for FILE in results/01.cutadapt/*_trimmed.fastq.gz; do
+  SAMPLE=$(basename $FILE _trimmed.fastq.gz)
+  echo "$SAMPLE,$(readlink -f $FILE),forward" >> manifest.tsv
+done
+#importar a qiime2 
+qiime tools import \
+  --type 'SampleData[SequencesWithQuality]' \
+  --input-path manifest.csv \
+  --output-path demux-seqs.qza \
+  --input-format SingleEndFastqManifestPhred33V2
+#Visualizar la calidad de las secuencias
+qiime demux summarize \
+  --i-data demux-seqs.qza \
+  --o-visualization demux-seqs.qzv
+#el .qzv resultante puede ser visualizado en https://view.qiime2.org/visualization/
