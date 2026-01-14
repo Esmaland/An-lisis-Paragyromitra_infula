@@ -31,3 +31,13 @@ qiime demux summarize \
   --i-data demux-seqs.qza \
   --o-visualization demux-seqs.qzv
 #el .qzv resultante puede ser visualizado en https://view.qiime2.org/visualization/
+#en el help da la oción de denoise-ccs que sirve para pacbio pero no pude hacer que corra, así que utilicé single
+qiime dada2 denoise-single \
+  --i-demultiplexed-seqs demux-seqs.qza \
+  --p-trunc-len 1469 \
+  --p-max-ee 2 \
+  --o-representative-sequences results/02.qiime/03.rep-seqs_v1.qza \
+  --o-table results/02.qiime/03.feature-table_v1.qza \
+  --o-denoising-stats results/02.qiime/03.denoising-stats_v1.qza \
+  --p-n-threads 10
+#descargué la base de datos de SILVA https://www.arb-silva.de/current-release/QIIME2/2025.7/SSU/full-length/uniform, la de SILVA138.2_SSURef_NR99_uniform_classifier_full-length.qza
