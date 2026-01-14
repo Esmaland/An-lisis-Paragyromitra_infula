@@ -41,3 +41,25 @@ qiime dada2 denoise-single \
   --o-denoising-stats results/02.qiime/03.denoising-stats_v1.qza \
   --p-n-threads 10
 #descargué la base de datos de SILVA https://www.arb-silva.de/current-release/QIIME2/2025.7/SSU/full-length/uniform, la de SILVA138.2_SSURef_NR99_uniform_classifier_full-length.qza
+#Lo descargué desde mi compu, así que me fui a Ubuntu para correr lo siguiente: 
+scp -r SILVA138.2_SSURef_NR99_uniform_classifier_full-length.qza  dafranco@mitla.ccg.unam.mx:/data2/PEG/dafranco/Amplicones_16S
+#Una vez copiado a donde lo necesitaba, lo pasé a data porque olvidé hacerlo antes
+mv SILVA138.2_SSURef_NR99_uniform_classifier_full-length.qza data
+#Luego corrí: 
+qiime feature-classifier classify-sklearn  
+--i-classifier data/SILVA138.2_SSURef_NR99_uniform_classifier_full-length.qza  
+--i-reads results/02.qiime/03.rep-seqs_v1.qza   
+--o-classification taxonomy.qza --p-n-jobs 10
+#ahora para poder visualizar lo que ya tengo
+# Visualizar la taxonomía
+qiime metadata tabulate \
+  --m-input-file results/02.qiime/taxonomy.qza \
+  --o-visualization results/02.qiime/taxonomy.qzv
+# Visualizar las secuencias representativas
+qiime feature-table tabulate-seqs \
+--i-data results/02.qiime/03.rep-seqs_v1.qza \
+--o-visualization results/02.qiime/03.rep-seqs_v1.qza.qzv
+# visualizar la tabla de conteos
+qiime feature-table summarize \
+--i-table results/02.qiime/03.feature-table_v1.qza \
+--o-visualization results/02.qiime/03.feature-table_v1.qzv
