@@ -20,7 +20,7 @@ for FILE in results/01.cutadapt/*_trimmed.fastq.gz; do
   SAMPLE=$(basename $FILE _trimmed.fastq.gz)
   echo "$SAMPLE,$(readlink -f $FILE),forward" >> manifest.tsv
 done
-#importar a qiime2 
+#importar a qiime2. Usando sequences with quality pooorque es para SE
 qiime tools import \
   --type 'SampleData[SequencesWithQuality]' \
   --input-path manifest.csv \
@@ -31,7 +31,7 @@ qiime demux summarize \
   --i-data demux-seqs.qza \
   --o-visualization demux-seqs.qzv
 #el .qzv resultante puede ser visualizado en https://view.qiime2.org/visualization/
-#en el help da la oción de denoise-ccs que sirve para pacbio pero no pude hacer que corra, así que utilicé single
+#en el help da la opción de denoise-ccs que sirve para pacbio pero no pude hacer que corra, así que utilicé single, probablmente porque exporté con sequences with quality
 qiime dada2 denoise-single \
   --i-demultiplexed-seqs demux-seqs.qza \
   --p-trunc-len 1469 \
@@ -51,7 +51,6 @@ qiime feature-classifier classify-sklearn
 --i-reads results/02.qiime/03.rep-seqs_v1.qza   
 --o-classification taxonomy.qza --p-n-jobs 10
 #ahora para poder visualizar lo que ya tengo
-# Visualizar la taxonomía
 qiime metadata tabulate \
   --m-input-file results/02.qiime/taxonomy.qza \
   --o-visualization results/02.qiime/taxonomy.qzv
@@ -59,7 +58,13 @@ qiime metadata tabulate \
 qiime feature-table tabulate-seqs \
 --i-data results/02.qiime/03.rep-seqs_v1.qza \
 --o-visualization results/02.qiime/03.rep-seqs_v1.qza.qzv
-# visualizar la tabla de conteos
+# visualizar la tabla de conteos :0 
 qiime feature-table summarize \
 --i-table results/02.qiime/03.feature-table_v1.qza \
 --o-visualization results/02.qiime/03.feature-table_v1.qzv
+#Para visualizar la taxonomía
+qiime taxa barplot \
+  --i-table results/02.qiime/03.feature-table_v1.qza \
+  --i-taxonomy results/02.qiime/04.taxonomy.qza \
+  --m-metadata-file metadata.tsv \
+  --o-visualization results/02.qiime/taxa-barplot.qzv
