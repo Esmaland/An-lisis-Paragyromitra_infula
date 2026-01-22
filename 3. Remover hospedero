@@ -2,5 +2,14 @@
 #!/bin/bash
 #Primero debo descargar los genomas. Revisar que sean tanto los ya ensamblados como las secuencias crudas. 
 #Para descargar puedo ir a la página de ncbi (https://www.ncbi.nlm.nih.gov/datasets/genome/?taxon=33160) y ahí ver qué genomas hay dosponibles
-  #Seleccionar el 
-ls data
+  #Seleccionar el genoma de interés y descargarlo con datasets
+cd Metagenoma_paragyromitra/data/
+mkdir genomas_ref_Paragyromtira
+cd genomas_ref_Paragyromitra 
+mkdir directory #para poner los directorios de cada archivo descargado
+cd directory
+datasets #de los genomas que quiero descargar 
+mkdir genomas_ref_Gyromitra
+cd directory_G 
+datasets #de los genomas que quiero descargar
+
