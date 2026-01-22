@@ -12,4 +12,6 @@ datasets #de los genomas que quiero descargar
 mkdir genomas_ref_Gyromitra
 cd directory_G 
 datasets #de los genomas que quiero descargar
+cd ../../../
+mkdir -p results/03.host_remove
 
