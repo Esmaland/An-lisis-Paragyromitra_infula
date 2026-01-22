@@ -1,3 +1,6 @@
+```bash
+#!/bin/bash
 #Primero debo descargar los genomas. Revisar que sean tanto los ya ensamblados como las secuencias crudas. 
 #Para descargar puedo ir a la página de ncbi (https://www.ncbi.nlm.nih.gov/datasets/genome/?taxon=33160) y ahí ver qué genomas hay dosponibles
   #Seleccionar el 
+ls data
