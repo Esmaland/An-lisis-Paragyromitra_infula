@@ -23,4 +23,6 @@ mv *genomic.fna .
 wc -l *genomic.fna
 cat *.fna > host_genomic.fna
 wc -l host_genomic.fna
-#debe dar el mismo número que antes porque está concatenando todes 
+#debe dar el mismo número que antes porque está concatenando todes. Ahora ya puedo crear mi índice
+#utilizo -p y -a porque me da el algoritmo de construcción BWT (bwtsw o rb2)
+bwa -p host_genome.fna -a bwtsw host_genome.fna
