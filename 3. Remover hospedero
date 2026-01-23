@@ -44,3 +44,7 @@ qsub run_mapping.jdl
 #celebras porque sí te salió
 #visualizas las lecturas que se alinearon
 samtools view -f 4 mapping.sorted.bam | cut -f2 | sort | uniq -c
+samtools view -f 77 mapping.sorted.bam | \
+awk '{print "@"$1"\n"$10"\n+\n"$11}' > ../../data/microbioma_R1_fastq
+samtools view -f 141 mapping.sorted.bam | \
+awk '{print "@"$1"\n"$10"\n+\n"$11}' > ../../data/microbioma_R2.fastq
