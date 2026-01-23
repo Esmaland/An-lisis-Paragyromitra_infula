@@ -14,4 +14,13 @@ cd directory_G
 datasets #de los genomas que quiero descargar
 cd ../../../
 mkdir -p results/03.host_remove
-
+#Al final junté todos los genomas de Gyromitra y Paragyromitra en una sola carpeta, algo que pude haber hecho al principio
+mv genomas_ref_Gyromitra genomas_ref_Paragyromitra
+cd genomas_ref_Paragyromitra
+mv *genomic.fna .
+#concatenar todos mis genomas porque quiero que todos ellos se mapeen con los metagenomas que quiero analizar
+#Pero primero quiero contar cuántos caracteres hay en cada uno para ver si están más o menos igual
+wc -l *genomic.fna
+cat *.fna > host_genomic.fna
+wc -l host_genomic.fna
+#debe dar el mismo número que antes porque está concatenando todes 
