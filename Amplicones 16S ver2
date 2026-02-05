@@ -1,0 +1,27 @@
+#Importar de una vez mis muestras, con los controles positivos y sin el paso del cutadapt
+#Hacer el manifest
+echo "sample-id,absolute-filepath,direction" > manifest.tab
+for FILE in data/*.fastq; do   SAMPLE=$(basename $FILE _trimmed.fastq.gz);
+echo "$SAMPLE,$(readlink -f $FILE),forward" >> manifest.tab; done
+#Ver el archivo manifest
+less manifest_ver2.tsv 
+#Importar a Qiime2
+qiime tools import   
+--type 'SampleData[SequencesWithQuality]'   
+--input-path manifest_ver2.tsv   
+--output-path demux-seqs.qza   
+--input-format SingleEndFastqManifestPhred33V2
+#demux
+qiime demux summarize
+--i-data demux-seqs.qza
+--o-visualization demux-seqs.qzv
+#Visualizar el demux-seqs.qzv en el visualizador de Qimme2
+qiime dada2 denoise-ccs
+--i-demultiplexed-seqs demux-seqs.qza
+--p-front AGRGTTYGATYMTGGCTCAG
+--p-adapter RGYTACCTTGTTACGACTT
+--o-table results/02.qiime/ver_2/table_2.qza
+--o-representative-sequences results/02.qiime/ver_2/rep-seqs_2.qza
+--o-denoising-stats results/02.qiime/ver_2/denoising-stats_2.qza
+--p-n-threads 8
+--verbose
