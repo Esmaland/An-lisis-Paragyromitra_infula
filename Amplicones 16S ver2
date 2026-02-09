@@ -1,10 +1,12 @@
+#Activar el ambiente de conda
+conda activate qiime2-amplicon-2025.7
 #Importar de una vez mis muestras, con los controles positivos y sin el paso del cutadapt
 #Hacer el manifest
-echo "sample-id,absolute-filepath,direction" > manifest.tab
-for FILE in data/*.fastq; do   SAMPLE=$(basename $FILE _trimmed.fastq.gz);
+echo "sample-id,absolute-filepath,direction" > manifest_ver2.tsv
+for FILE in data/*.fastq; do   SAMPLE=$(basename $FILE _.fastq);
 echo "$SAMPLE,$(readlink -f $FILE),forward" >> manifest.tab; done
 #Ver el archivo manifest
-less manifest_ver2.tsv 
+less manifest_ver2.tsv
 #Importar a Qiime2
 qiime tools import   
 --type 'SampleData[SequencesWithQuality]'   
@@ -16,12 +18,48 @@ qiime demux summarize
 --i-data demux-seqs.qza
 --o-visualization demux-seqs.qzv
 #Visualizar el demux-seqs.qzv en el visualizador de Qimme2
+#Ver la ayuda de denoise-css
+qiime dada2 denoise-ccs --help #Prestar atención a los plug-in que son 'required'
 qiime dada2 denoise-ccs
---i-demultiplexed-seqs demux-seqs.qza
---p-front AGRGTTYGATYMTGGCTCAG
---p-adapter RGYTACCTTGTTACGACTT
+--i-demultiplexed-seqs demux-seqs.qza #el input
+--p-front AGRGTTYGATYMTGGCTCAG #A fuerza debo poner el adaptador para que lo remueva
+--p-adapter RGYTACCTTGTTACGACTT #Este no es requerido, pero lo puse para que lo remueva porque no está el paso del cutadapt
 --o-table results/02.qiime/ver_2/table_2.qza
 --o-representative-sequences results/02.qiime/ver_2/rep-seqs_2.qza
 --o-denoising-stats results/02.qiime/ver_2/denoising-stats_2.qza
 --p-n-threads 8
 --verbose
+#Hacer la clasificación taxonómica
+qiime feature-classifier classify-sklearn 
+--i-classifier data/SILVA138.2_SSURef_NR99_uniform_classifier_full-length.qza 
+--i-reads results/02.qiime/ver_2/rep-seqs_2.qza 
+--o-classification taxonomy.qza 
+--p-n-jobs 10
+qiime metadata tabulate 
+--m-input-file results/02.qiime/ver_2/taxonomy.qza   
+--o-visualization results/02.qiime/ver_2/taxonomy.qzv
+qiime feature-table tabulate-seqs 
+--i-data results/02.qiime/ver_2/rep-seqs_2.qza 
+--o-visualization results/02.qiime/ver_2/03.rep-seqs_2.qzv
+qiime feature-table summarize 
+--i-table results/02.qiime/ver_2/table_2.qza 
+--o-visualization results/02.qiime/ver_2/feature-table_2.qzv
+qiime taxa barplot   
+--i-table results/02.qiime/ver_2/table_2.qza   
+--i-taxonomy results/02.qiime/ver_2/taxonomy.qza   
+--m-metadata-file data/metadata.tsv   
+--o-visualization results/02.qiime/ver_2/taxa-barplot.qzv
+#Ahora, es importante que para el paso de decontam, debo tener la siguiente estructura en mi metadata (o similar): 
+#sample-id  sample-type is-control (false/true)
+qiime quality-control decontam-identify --help
+qiime quality-control decontam-identify \
+--i-table results/02.qiime/ver_2/table_2.qza \
+--m-metadata-file data/metadata_filter.tsv \
+--p-prev-control-column is-control \
+--p-prev-control-indicator "TRUE" \
+--o-decontam-scores decontam_score.qza
+qiime quality-control decontam-score-viz 
+--i-decontam-scores decontam_score.qza 
+--i-table results/02.qiime/ver_2/table_2.qza 
+--o-visualization decontam_score.qzv
+#Visualizar para decidir si hacer o no el paso de remoción de las lecturas contaminadas
