@@ -3,10 +3,10 @@ qiime tools import \
   --input-path Negative_controls.fastq \
   --type 'FeatureData[Sequence]' \
   --output-path contaminantes.qza
-#Transformar la tabla se secuencias representativas
+#Transformar la tabla de secuencias representativas
 qiime quality-control exclude-seqs \
   --i-query-sequences 03.rep-seqs_2 \
   --i-reference-sequences contaminantes.qza \
   --p-method vsearch \
   --p-perc-identity 0.97 \
-  --o-sequence-subset secuencias_limpias.qza
+  --o-sequence-misses secuencias_limpias.qza
