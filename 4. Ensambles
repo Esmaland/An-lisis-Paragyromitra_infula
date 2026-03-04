@@ -1,1 +1,2 @@
+conda activate spades4
 metaspades.py -t 6 -1 microbioma_R1.fastq -2 microbioma_R2.fastq -o ../results/05.metaspades/
